@@ -1,0 +1,21 @@
+node_modules/
+dist/
+release/
+tmp/
+ALGHANIM DELIVERY/
+tools/headless/node_modules/
+tools/headless/reports/
+
+*.log
+*.tmp
+*.bak
+*.db
+*.sqlite
+*.sqlite3
+*.asar
+*.orig
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

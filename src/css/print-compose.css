@@ -1,0 +1,233 @@
+/* Dedicated print composition engine */
+.print-container {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: -200vw;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.print-container[data-print-ready="true"] {
+  width: 1px;
+  height: 1px;
+}
+
+.print-container .print-measure-root {
+  position: absolute;
+  top: 0;
+  left: -100000px;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.print-job {
+  color: #000;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.print-job *,
+.print-job *::before,
+.print-job *::after {
+  box-sizing: border-box;
+}
+
+.print-sheet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.print-sheet {
+  width: var(--sheet-width);
+  height: var(--sheet-height);
+  background: #fff;
+  color: #000;
+  position: relative;
+  overflow: hidden;
+  break-after: page;
+  page-break-after: always;
+}
+
+.print-sheet:last-child {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.print-sheet-surface {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.print-sheet-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  gap: var(--nup-gap, 4mm);
+  padding: var(--nup-padding, 4mm);
+}
+
+.print-sheet-grid--single {
+  gap: 0;
+  padding: 0;
+}
+
+.print-sheet-cell {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.print-sheet-cell-content {
+  transform-origin: top left;
+}
+
+.print-logical-page {
+  width: var(--sheet-width);
+  height: var(--sheet-height);
+  background: #fff;
+  color: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.print-page-inner {
+  position: absolute;
+  top: var(--margin-top);
+  right: var(--margin-right);
+  bottom: var(--margin-bottom);
+  left: var(--margin-left);
+  overflow: hidden;
+}
+
+.print-page-scaled {
+  width: calc(100% / var(--content-scale));
+  height: calc(100% / var(--content-scale));
+  transform: scale(var(--content-scale));
+  transform-origin: top left;
+}
+
+.print-doc-frame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #000;
+}
+
+.print-live-page {
+  width: 100% !important;
+  min-height: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  break-after: auto !important;
+  page-break-after: auto !important;
+}
+
+.print-live-page.inv-page {
+  gap: 0;
+}
+
+.print-doc-frame--grayscale {
+  filter: grayscale(1);
+}
+
+.print-doc-frame--no-backgrounds .inv-title-bar,
+.print-doc-frame--no-backgrounds .inv-table th,
+.print-doc-frame--no-backgrounds .inv-subtotal-row td,
+.print-doc-frame--no-backgrounds .inv-tot-grand td {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.print-doc-frame--no-backgrounds .inv-table th {
+  border-color: #555 !important;
+}
+
+.print-doc-frame--no-backgrounds .inv-tot-grand td,
+.print-doc-frame--no-backgrounds .inv-subtotal-row td {
+  border-color: #777 !important;
+}
+
+.print-table-wrapper {
+  flex: 0 0 auto;
+}
+
+.print-doc-spacer {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.print-doc-frame .inv-table-wrap {
+  margin-bottom: 0;
+}
+
+.print-doc-frame .inv-footer-section,
+.print-doc-frame .lh-footer {
+  margin-top: 0;
+  padding-top: 3mm;
+}
+
+.print-doc-frame .inv-page-number {
+  margin-top: 1.5mm;
+}
+
+.print-doc-frame .bc-label-sheet {
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.print-doc-frame .bc-label {
+  border-color: transparent;
+}
+
+.print-doc-frame [contenteditable] {
+  outline: none !important;
+  background: transparent !important;
+}
+
+.print-doc-frame .inv-table td[contenteditable]:focus {
+  outline: none !important;
+  background: transparent !important;
+}
+
+.print-empty-state {
+  padding: 12mm 8mm;
+  text-align: center;
+  color: #64748b;
+  font-size: 11pt;
+}
+
+@media print {
+  .print-container {
+    left: 0 !important;
+    top: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+
+  .print-container[data-print-ready="true"] {
+    visibility: visible !important;
+    position: static !important;
+  }
+
+  .print-container .print-measure-root {
+    display: none !important;
+  }
+}

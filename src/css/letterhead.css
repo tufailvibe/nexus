@@ -1,0 +1,376 @@
+/* ══════════════════════════════════════════════════════
+   letterhead.css — Letterhead (Landscape) Styles
+   Pixel-perfect match to Reference Letterhead PDF
+   ══════════════════════════════════════════════════════ */
+
+/* ── Letterhead Header ── */
+.lh-header-manual {
+    margin-bottom: 1.2mm;
+}
+
+.lh-top-grid {
+    display: grid;
+    grid-template-columns: 22% 15% 20% 17% 26%;
+    align-items: end;
+    column-gap: 0.8mm;
+}
+
+.lh-left-brand {
+    text-align: center;
+    line-height: 1;
+}
+
+.lh-left-brand-svg-wrap {
+    width: 53mm;
+    height: 35mm;
+    overflow: hidden;
+    margin: 0 auto 0.4mm auto;
+}
+
+.lh-left-brand-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+}
+
+.lh-cr-en {
+    text-align: center;
+    font-size: 13.2pt;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #1f2430;
+    align-self: end;
+}
+
+.lh-center-brand {
+    text-align: center;
+    color: #1a3476;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 1;
+    margin-bottom: -13mm;
+    transform: translateX(7.0mm);
+}
+
+.lh-center-mark-wrap {
+    width: 100%;
+    height: 42mm;
+    overflow: visible;
+    margin: 0 auto 0;
+}
+
+.lh-center-mark-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+}
+
+.lh-center-ar {
+    font-family: 'Noto Naskh Arabic', 'Segoe UI', sans-serif;
+    font-size: 16pt;
+    font-weight: 800;
+    line-height: 1;
+    color: #13347b;
+    margin-bottom: 0.3mm;
+}
+
+.lh-center-en {
+    font-family: 'Montserrat', 'Segoe UI', sans-serif;
+    font-size: 11pt;
+    font-weight: 800;
+    line-height: 1;
+    color: #13347b;
+    letter-spacing: 0.5px;
+}
+
+.lh-cr-ar {
+    font-family: 'Noto Naskh Arabic', 'Segoe UI', sans-serif;
+    font-size: 10.6pt;
+    font-weight: 800;
+    text-align: left;
+    color: #1f2430;
+    align-self: end;
+    direction: rtl;
+}
+
+.lh-date-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: end;
+    gap: 1.2mm;
+    font-size: 11pt;
+    color: #1f2430;
+    white-space: nowrap;
+    align-self: end;
+}
+
+.lh-top-divider {
+    height: 1px;
+    margin-top: 0;
+    position: relative;
+    z-index: 0;
+    background: linear-gradient(to right,
+            #6b7280 0,
+            #6b7280 calc(50% - 18mm),
+            transparent calc(50% - 18mm),
+            transparent calc(50% + 18mm),
+            #6b7280 calc(50% + 18mm),
+            #6b7280 100%);
+}
+
+.lh-header-svg-wrap {
+    position: relative;
+    margin-bottom: 1.2mm;
+}
+
+.lh-header-layout-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.lh-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 3mm;
+    border-bottom: 2pt solid #2c4284;
+    margin-bottom: 2mm;
+}
+
+.lh-header-left {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    flex-shrink: 0;
+}
+
+/* ── Left Logo: clip to show only the GD mark ── */
+.lh-logo-left-wrap {
+    width: 18mm;
+    height: 18mm;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.lh-logo-left {
+    width: 40mm;
+    height: auto;
+    object-fit: cover;
+    object-position: center 0%;
+    margin-top: -2mm;
+    margin-left: -11mm;
+}
+
+.lh-company-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.lh-company-ar {
+    font-family: 'Noto Naskh Arabic', 'Segoe UI', sans-serif;
+    font-size: 8pt;
+    color: #333;
+    direction: rtl;
+}
+
+.lh-company-en {
+    font-size: 7.5pt;
+    color: #333;
+    font-weight: 600;
+}
+
+.lh-header-center {
+    text-align: center;
+    flex: 1;
+}
+
+.lh-cr {
+    font-weight: 800;
+    font-size: 14pt;
+    color: #2c4284;
+    letter-spacing: 0.5px;
+}
+
+/* ── Right Logo: large, prominent GD logo ── */
+.lh-header-right {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    flex-shrink: 0;
+}
+
+.lh-logo-right-wrap {
+    width: 28mm;
+    height: 28mm;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.lh-logo-right {
+    width: 58mm;
+    height: auto;
+    object-fit: cover;
+    object-position: center 10%;
+    margin-top: -2mm;
+    margin-left: -15mm;
+}
+
+.lh-header-ar-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-family: 'Noto Naskh Arabic', sans-serif;
+    font-size: 7pt;
+    color: #555;
+    direction: rtl;
+    gap: 0.5mm;
+}
+
+.lh-company-en-right {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 6pt;
+    color: #555;
+    direction: ltr;
+}
+
+/* ── Date Row (top-right aligned) ── */
+.lh-date-overlay {
+    position: absolute;
+    top: 8.2mm;
+    right: 2.2mm;
+    font-size: 10pt;
+    line-height: 1;
+}
+
+.lh-date-label {
+    font-weight: 600;
+}
+
+.lh-date-value {
+    display: inline-block;
+    min-width: 49mm;
+    border: none;
+    padding: 0;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+    text-align: left;
+}
+
+.lh-date-line {
+    display: inline-block;
+    min-width: 49mm;
+    border-bottom: 1px dotted #333;
+    line-height: 1;
+    padding-bottom: 0.1mm;
+}
+
+.lh-date-value:empty::before {
+    content: " ";
+}
+
+/* ── Addressee Section ── */
+.lh-addressee {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5mm;
+}
+
+.lh-addr-left {
+    flex: 1;
+}
+
+.lh-addr-right {
+    flex: 1;
+    text-align: right;
+    direction: rtl;
+}
+
+.lh-addr-line {
+    font-size: 9pt;
+    margin-bottom: 0.5mm;
+    color: #222;
+}
+
+.lh-addr-ar {
+    font-family: 'Noto Naskh Arabic', sans-serif;
+    font-size: 9pt;
+    margin-bottom: 0.5mm;
+    color: #222;
+}
+
+/* ── Subject ── */
+.lh-subject {
+    text-align: center;
+    margin-bottom: 1.5mm;
+}
+
+.lh-subject-en {
+    font-size: 11pt;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+.lh-subject-ar {
+    font-family: 'Noto Naskh Arabic', sans-serif;
+    font-size: 11pt;
+    font-weight: 700;
+    direction: rtl;
+}
+
+/* ── Request Line ── */
+.lh-request {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2mm;
+    font-size: 8pt;
+    color: #333;
+}
+
+.lh-req-en {
+    flex: 1;
+}
+
+.lh-req-ar {
+    flex: 1;
+    text-align: right;
+    direction: rtl;
+    font-family: 'Noto Naskh Arabic', sans-serif;
+}
+
+/* ── Letterhead Footer ── */
+.lh-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 3mm;
+    font-size: 9pt;
+}
+
+.lh-footer-left {
+    color: #333;
+}
+
+.lh-footer-left div {
+    margin-bottom: 1mm;
+}
+
+.lh-footer-right {
+    text-align: right;
+    direction: rtl;
+    font-family: 'Noto Naskh Arabic', sans-serif;
+    color: #2c4284;
+    font-weight: 600;
+}
+
+.lh-footer-right div {
+    margin-bottom: 1mm;
+}

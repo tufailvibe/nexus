@@ -1,0 +1,80 @@
+{
+    "name": "al-ghanim-nexus",
+    "version": "1.0.0",
+    "description": "Recruiter-safe source snapshot for the Al Ghanim Nexus Electron desktop app",
+    "main": "app-main/main.js",
+    "scripts": {
+    "start": "node start.js",
+    "dev": "node start.js",
+    "test": "npm --prefix tools/headless test",
+    "audit": "npm --prefix tools/headless run audit",
+    "test:deep": "npm --prefix tools/headless run test:deep",
+    "build": "electron-builder --win && npm run stamp:win:metadata",
+    "build:win:x64": "electron-builder --win nsis --x64 && npm run stamp:win:metadata",
+    "build:dir:x64": "electron-builder --win dir --x64 && npm run stamp:win:metadata",
+    "stamp:win:metadata": "node scripts/stamp-win-exe-metadata.js",
+    "deliver:win": "electron-builder --win && npm run stamp:win:metadata && node scripts/create-delivery-folder.js"
+  },
+    "build": {
+        "appId": "com.alghanimnexus.app",
+        "productName": "Al Ghanim Nexus",
+        "copyright": "Copyright (C) 2026 mohdt. All rights reserved.",
+        "forceCodeSigning": false,
+        "artifactName": "Al-Ghanim-Nexus-Setup-${version}-${arch}.${ext}",
+        "win": {
+            "icon": "build/icon.ico",
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64",
+                        "ia32",
+                        "arm64"
+                    ]
+                }
+            ],
+            "signAndEditExecutable": false
+        },
+        "nsis": {
+            "oneClick": true,
+            "deleteAppDataOnUninstall": false,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "shortcutName": "Al Ghanim Nexus",
+            "uninstallDisplayName": "Al Ghanim Nexus",
+            "differentialPackage": false
+        },
+        "files": [
+            "app-main/**/*",
+            "src/**/*",
+            "node_modules/sql.js/**/*",
+            "node_modules/bwip-js/**/*",
+            "node_modules/pdfjs-dist/**/*"
+        ],
+        "directories": {
+            "output": "dist"
+        },
+        "removePackageScripts": true
+    },
+    "devDependencies": {
+        "electron": "^35.7.5",
+        "electron-builder": "^26.8.1"
+    },
+    "dependencies": {
+        "bwip-js": "^4.1.0",
+        "pdfjs-dist": "^4.10.38",
+        "sql.js": "^1.10.0"
+    },
+    "author": "mohdt",
+    "license": "SEE LICENSE IN LICENSE",
+    "private": false,
+    "keywords": [
+        "electron",
+        "desktop-app",
+        "inventory",
+        "invoice",
+        "barcode",
+        "offline-first"
+    ],
+    "type": "commonjs"
+}

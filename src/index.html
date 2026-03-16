@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Al Ghanim Nexus - Invoice & Rapid Order Sheet</title>
+  <meta name="description" content="Al Ghanim Nexus - Invoice & Rapid Order Sheet Desktop App">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/invoice.css">
+  <link rel="stylesheet" href="css/letterhead.css">
+  <link rel="stylesheet" href="css/sell.css">
+  <link rel="stylesheet" href="css/barcode.css">
+  <link rel="stylesheet" href="css/stocks.css">
+  <link rel="stylesheet" href="css/print-compose.css">
+  <link rel="stylesheet" href="css/print-dialog.css">
+</head>
+
+<body>
+  <!-- Fatal Error Handler -->
+  <div id="fatal-error">
+    <h2>Critical Error</h2>
+    <pre id="error-content"></pre>
+    <button id="fatal-error-reload" type="button"
+      style="margin-top:20px;padding:10px 20px;cursor:pointer;border:none;border-radius:6px;background:#3498db;color:#fff;font-weight:600">Reload
+      App</button>
+  </div>
+
+  <script>
+    (function () {
+      const fatalError = document.getElementById('fatal-error');
+      const errorContent = document.getElementById('error-content');
+      const reloadButton = document.getElementById('fatal-error-reload');
+
+      function showFatalError(message, diagnostics) {
+        if (fatalError) fatalError.style.display = 'flex';
+        if (errorContent) {
+          errorContent.textContent = message || 'Something went wrong. Reload the app to continue.';
+        }
+        if (diagnostics) {
+          console.error('Fatal renderer error:', diagnostics);
+        }
+      }
+
+      if (reloadButton) {
+        reloadButton.addEventListener('click', function () {
+          location.reload();
+        });
+      }
+
+      window.onerror = function (msg, url, line, col, error) {
+        showFatalError(
+          'Something went wrong. Reload the app to continue.',
+          {
+            message: msg,
+            url,
+            line,
+            col,
+            stack: error?.stack || ''
+          }
+        );
+      };
+
+      window.addEventListener('unhandledrejection', function (event) {
+        showFatalError(
+          'Something went wrong. Reload the app to continue.',
+          event.reason?.stack || event.reason || 'Unknown'
+        );
+      });
+    })();
+  </script>
+
+  <!-- ══════ Login Screen ══════ -->
+  <div id="login-overlay" class="login-overlay">
+    <div class="login-card">
+      <div class="login-card-glow" aria-hidden="true"></div>
+      <div class="login-brand-mark" aria-hidden="true">
+        <img src="assets/login-calligraphy-gold.svg" alt="">
+      </div>
+      <div class="login-brand-kicker">AL GHANIM</div>
+      <h1>AL GHANIM NEXUS</h1>
+      <div class="login-subtitle">Business Control Center</div>
+      <form id="login-form">
+        <label class="login-field">
+          <span class="login-field-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 12.3a4.15 4.15 0 1 0 0-8.3 4.15 4.15 0 0 0 0 8.3Zm0 2.3c-4.2 0-7.6 2.15-7.6 4.8 0 .33.27.6.6.6h14c.33 0 .6-.27.6-.6 0-2.65-3.4-4.8-7.6-4.8Z" fill="currentColor"/>
+            </svg>
+          </span>
+          <input type="text" id="login-username" placeholder="Username" autocomplete="username" value="admin">
+        </label>
+        <label class="login-field">
+          <span class="login-field-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M17.2 10.2h-.85V8.35a4.35 4.35 0 1 0-8.7 0v1.85H6.8a1.8 1.8 0 0 0-1.8 1.8v6.2A1.8 1.8 0 0 0 6.8 20h10.4a1.8 1.8 0 0 0 1.8-1.8V12a1.8 1.8 0 0 0-1.8-1.8Zm-7.75-1.85a2.55 2.55 0 1 1 5.1 0v1.85h-5.1V8.35Z" fill="currentColor"/>
+            </svg>
+          </span>
+          <input type="password" id="login-password" placeholder="Password (optional)" autocomplete="current-password">
+        </label>
+        <label class="login-remember">
+          <input type="checkbox" id="login-remember"> Keep me signed in on this PC
+        </label>
+        <div class="login-remember-note">Use this only on a trusted counter PC.</div>
+        <button type="submit" class="login-submit">Sign In</button>
+        <div id="login-error" class="login-error"></div>
+      </form>
+      <div class="login-founders">Business Operations Suite</div>
+      <div class="login-founders-tagline">Configured for secure local use</div>
+      <div class="login-footer-glow" aria-hidden="true"></div>
+      <div class="login-copyright">Licensed desktop installation</div>
+    </div>
+  </div>
+
+  <!-- ══════ Main App ══════ -->
+  <div id="app-container" class="app-container" style="display:none">
+
+    <!-- ── Top Bar ── -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <span class="app-brand">Al Ghanim Nexus</span>
+      </div>
+
+      <nav class="segment-toggle">
+        <div class="segment-slider"></div>
+        <button class="segment-btn active" data-mode="sell">Sell</button>
+        <button class="segment-btn" data-mode="barcode">Barcode</button>
+        <button class="segment-btn" data-mode="stocks">My Stocks</button>
+      </nav>
+
+      <div class="top-bar-right">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">🌙</button>
+
+        <div id="scanner-status" class="scanner-status">
+          <span class="scanner-dot disconnected"></span>
+          <span class="scanner-label disconnected">BARCODE SCANNER NOT CONNECTED</span>
+        </div>
+
+        <div id="scan-target-badge" class="scan-target-badge" aria-live="polite">
+          <span class="scan-target-label">Scan Target</span>
+          <span id="scan-target-value" class="scan-target-value">Sell / Invoice</span>
+        </div>
+
+        <div style="position:relative">
+          <button id="notification-bell" class="notification-bell">
+            🔔
+            <span id="notification-badge" class="notification-badge" style="display:none">0</span>
+          </button>
+          <div id="notification-dropdown" class="notif-dropdown"></div>
+        </div>
+
+        <div class="user-section">
+          <button id="user-btn" class="user-btn">👤 Admin</button>
+          <div id="user-dropdown" class="user-dropdown">
+            <button id="btn-manage-creds">Change Password</button>
+            <button id="btn-manage-settings">Settings</button>
+            <button id="btn-toggle-theme">Switch Theme</button>
+            <button id="btn-logout">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══════ SELL MODE ══════ -->
+    <section id="panel-sell" class="mode-panel active" data-mode="sell">
+      <div class="sell-toolbar">
+        <div class="sell-toolbar-left">
+          <select id="sell-view-type">
+            <option value="invoice">Invoice</option>
+            <option value="letterhead">Rapid Order Sheet</option>
+          </select>
+          <button id="btn-new-doc" class="toolbar-btn"><span class="btn-icon">📄</span><span
+              class="btn-text">New</span></button>
+          <button id="btn-save-template" class="toolbar-btn"><span class="btn-icon">📋</span><span class="btn-text">Save
+              </span></button>
+          <button id="btn-load-template" class="toolbar-btn"><span class="btn-icon">📂</span><span
+              class="btn-text">View Saved</span></button>
+          <div class="page-actions-wrap">
+            <button id="btn-add-page" class="toolbar-btn" title="Manage pages"><span class="btn-icon">➕</span><span
+                class="btn-text">Page Actions</span></button>
+            <div id="page-actions-menu" class="page-actions-menu">
+              <div id="page-actions-context" class="page-actions-context">Page 1 selected</div>
+              <button type="button" class="page-action-item" data-page-action="add">Add Blank Page</button>
+              <button type="button" class="page-action-item" data-page-action="duplicate">Duplicate Current Page</button>
+              <button type="button" class="page-action-item danger" data-page-action="delete">Delete Current Page</button>
+            </div>
+          </div>
+
+          <!-- Product Search -->
+          <div class="sell-search-wrapper">
+            <span class="sell-search-icon">🔍</span>
+            <input type="text" id="sell-product-search" placeholder="Search name / barcode..."
+              autocomplete="off">
+            <div id="sell-search-results" class="sell-search-results"></div>
+          </div>
+        </div>
+      <div class="sell-toolbar-right">
+          <div id="sell-draft-status" class="sell-draft-status" aria-live="polite" hidden>
+            <span class="draft-status-dot"></span>
+            <span class="draft-status-text">No draft saved</span>
+          </div>
+          <div class="share-actions-wrap">
+            <button id="btn-share-menu" class="toolbar-btn share-trigger-btn" title="Share this document" aria-expanded="false">
+              <span class="share-btn-badge">></span>
+              <span class="btn-text">Share</span>
+            </button>
+            <div id="sell-share-menu" class="sell-share-menu" aria-label="Share current document">
+              <div class="share-menu-title">Share Current Document</div>
+              <div class="share-menu-subtitle">Gmail tries to paste the PDF automatically. WhatsApp opens faster with the PDF already copied in the background, so you can press Ctrl+V immediately.</div>
+              <label class="share-field">
+                <span class="share-field-label">Email</span>
+                <input type="email" id="sell-share-email" placeholder="customer@example.com" autocomplete="off">
+              </label>
+              <label class="share-field">
+                <span class="share-field-label">WhatsApp No.</span>
+                <input type="text" id="sell-share-whatsapp" placeholder="+965 XXXXXXXX" autocomplete="off">
+              </label>
+              <div class="share-menu-helper-actions">
+                <button id="btn-share-copy-message" class="share-helper-btn" type="button">Copy Message</button>
+                <button id="btn-share-copy-email" class="share-helper-btn" type="button">Copy Email</button>
+                <button id="btn-share-copy-whatsapp" class="share-helper-btn" type="button">Copy Number</button>
+                <button id="btn-share-reveal-pdf" class="share-helper-btn" type="button">View Shared Documents</button>
+              </div>
+              <div class="share-menu-actions">
+                <button id="btn-share-whatsapp" class="toolbar-btn share-btn share-btn-whatsapp" title="Open WhatsApp draft">
+                  <span class="share-btn-badge">WA</span>
+                  <span class="btn-text">WhatsApp</span>
+                </button>
+                <button id="btn-share-gmail" class="toolbar-btn share-btn share-btn-gmail" title="Open Gmail draft">
+                  <span class="share-btn-badge">@</span>
+                  <span class="btn-text">Gmail</span>
+                </button>
+              </div>
+              <p class="share-menu-hint">The PDF is prepared and copied in the background before the draft opens. Gmail tries to paste it automatically. For WhatsApp, press Ctrl+V as soon as the chat opens.</p>
+            </div>
+          </div>
+          <button id="btn-quick-print-doc" class="toolbar-btn quick-print-btn" hidden><span class="btn-icon">&#9889;</span><span
+              class="btn-text">Quick Print Invoice</span></button>
+          <button id="btn-manage-settings-toolbar" class="toolbar-btn" title="Settings"><span
+              class="btn-icon">⚙️</span></button>
+          <button id="btn-print-doc" class="toolbar-btn print-btn"><span class="btn-icon">🖨️</span><span
+              class="btn-text">Print / Save</span></button>
+        </div>
+      </div>
+
+      <div id="sell-pagination-bar" class="sell-pagination-bar" style="display:none">
+        <label>
+          <input type="checkbox" id="pagination-manual"> Manual Pagination
+        </label>
+        <span id="page-count-display" class="page-count">1 page(s)</span>
+      </div>
+
+      <div id="sell-view-banner" class="sell-view-banner" style="display:none"></div>
+      <div id="sell-workspace" class="sell-workspace"></div>
+      <div id="page-thumbnails" class="page-thumbnails"></div>
+    </section>
+
+    <!-- ══════ BARCODE GEN MODE ══════ -->
+    <section id="panel-barcode" class="mode-panel" data-mode="barcode">
+      <div class="bc-toolbar">
+        <button id="barcode-gen-btn" class="toolbar-btn"><span class="btn-icon">➕</span><span class="btn-text">New
+            Barcode</span></button>
+        <button id="barcode-print-btn" class="toolbar-btn print-btn"><span class="btn-icon">🖨️</span><span
+            class="btn-text">Print Selected</span></button>
+        <button id="barcode-sync-cards-btn" class="toolbar-btn" type="button"><span class="btn-icon">&#8635;</span><span
+            class="btn-text">Sync From Stocks</span></button>
+        <input type="text" id="barcode-library-search" class="bc-library-search"
+          placeholder="Search saved barcodes by code, name, or vendor...">
+      </div>
+
+      <!-- New Barcode Form -->
+      <div id="barcode-new-row" class="bc-new-row" style="display:none">
+        <div class="bc-form">
+          <div class="bc-form-fields">
+            <div class="bc-field">
+              <label for="bc-new-barcode-num">Barcode Number *</label>
+              <input type="text" id="bc-new-barcode-num" placeholder="Enter barcode number">
+            </div>
+            <div class="bc-field">
+              <label for="bc-new-format">Format</label>
+              <select id="bc-new-format">
+                <option value="code128">Code 128</option>
+                <option value="ean13">EAN-13</option>
+                <option value="code39">Code 39</option>
+                <option value="gs1-128">GS1-128</option>
+              </select>
+            </div>
+            <div class="bc-field">
+              <label for="bc-new-name-en">Item Name (EN)</label>
+              <input type="text" id="bc-new-name-en" placeholder="Item name English">
+            </div>
+            <div class="bc-field">
+              <label for="bc-new-name-ar">اسم الصنف (AR)</label>
+              <input type="text" id="bc-new-name-ar" dir="rtl" placeholder="اسم الصنف">
+            </div>
+            <div class="bc-field bc-field-half">
+              <label for="bc-new-weight">Weight</label>
+              <input type="text" id="bc-new-weight" placeholder="Weight">
+            </div>
+            <div class="bc-field bc-field-half">
+              <label for="bc-new-unitprice">Unit Price</label>
+              <input type="text" id="bc-new-unitprice" placeholder="Unit price">
+            </div>
+            <div class="bc-field bc-field-half">
+              <label for="bc-new-productby">Product By</label>
+              <input type="text" id="bc-new-productby" placeholder="Manufacturer">
+            </div>
+          </div>
+
+          <div class="bc-preview">
+            <span style="font-size:12px;font-weight:600;color:var(--text-secondary)">Preview:</span>
+            <div id="bc-preview-svg" class="bc-preview-svg">
+              <div style="padding:8px;color:#999;font-size:11px">Enter barcode number...</div>
+            </div>
+          </div>
+
+          <div class="bc-form-actions">
+            <button id="bc-cancel-btn" class="btn-secondary">Cancel</button>
+            <button id="bc-generate-btn" class="btn-secondary">Save to Library</button>
+            <button id="bc-save-product-btn" class="btn-secondary">Save as Product</button>
+            <button id="bc-generate-print-btn" class="btn-primary">Generate + Print</button>
+          </div>
+          <div class="bc-form-note">Use the library option for labels only. Use product save when this barcode should also appear in My Stocks.</div>
+        </div>
+      </div>
+
+      <div id="bc-list-wrap" class="bc-list-wrap"></div>
+    </section>
+
+    <!-- ══════ MY STOCKS MODE ══════ -->
+    <section id="panel-stocks" class="mode-panel stocks-panel" data-mode="stocks">
+      <div class="stocks-toolbar">
+        <div class="stocks-toolbar-primary">
+          <button id="stocks-add-row" class="toolbar-btn"><span class="btn-icon">➕</span><span class="btn-text">Add
+              Row</span></button>
+          <button id="stocks-remove-selected" class="toolbar-btn"><span class="btn-icon">🗑</span><span
+              class="btn-text">Delete Selected</span></button>
+          <button id="stocks-restore-selected" class="toolbar-btn"><span class="btn-icon">&#8634;</span><span
+              class="btn-text">Restore Selected</span></button>
+          <button id="stocks-view-history" class="toolbar-btn"><span class="btn-icon">ðŸ•’</span><span
+              class="btn-text">View History</span></button>
+        </div>
+        <label class="stocks-archive-toggle">
+          <input type="checkbox" id="stocks-show-archived">
+          Show archived
+        </label>
+        <input type="text" id="stocks-search" class="stocks-search" placeholder="Search by barcode, name...">
+      </div>
+
+      <div class="stocks-table-wrap">
+        <table class="stocks-table">
+          <thead>
+            <tr>
+              <th class="col-checkbox"><input type="checkbox" id="stocks-select-all"></th>
+              <th>S. no.</th>
+              <th>Barcode</th>
+              <th>Product By</th>
+              <th>Item Name</th>
+              <th>اسم الصنف</th>
+              <th>Weight</th>
+              <th>Qty.</th>
+              <th>Unit Price</th>
+            </tr>
+          </thead>
+          <tbody id="stocks-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══════ MODALS ══════ -->
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>⚙️ Settings</h2>
+
+      <div class="form-group">
+        <label>Invoice / Rapid Order Sheet Printer</label>
+        <select id="settings-invoice-printer"></select>
+      </div>
+      <div class="form-group">
+        <label>Barcode Printer</label>
+        <select id="settings-barcode-printer"></select>
+      </div>
+
+      <div class="form-group">
+        <label>Invoice Number Format</label>
+        <input type="text" id="settings-invoice-format" placeholder="INV-{NUM}">
+        <small style="color:var(--text-muted)">Use {NUM} as placeholder for the number</small>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="settings-autoserial-scan"> Auto-serial on barcode scan
+        </label>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="settings-autoserial-gen"> Auto-serial in barcode gen
+        </label>
+      </div>
+      <div class="form-group">
+        <label>Session Timeout</label>
+        <select id="settings-session-timeout">
+          <option value="0">Off</option>
+          <option value="15">15 minutes</option>
+          <option value="30">30 minutes</option>
+          <option value="60">60 minutes</option>
+        </select>
+        <small style="color:var(--text-muted)">Optional inactivity lock for shared counters.</small>
+      </div>
+
+      <div class="form-group">
+        <label>Theme Style</label>
+        <select id="settings-theme-style">
+          <option value="premium-light">Premium Light</option>
+          <option value="golden-white">Golden White</option>
+          <option value="executive-dark">Executive Dark</option>
+        </select>
+        <small style="color:var(--text-muted)">Choose the visual style used across the app. The top toggle cycles smoothly between all three themes.</small>
+      </div>
+
+      <hr style="border-color:var(--border-light);margin:16px 0">
+      <h3 style="font-size:14px;margin-bottom:8px">Backup & Data</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="settings-backup-now" class="btn-primary">Create Backup Now</button>
+        <button id="settings-export-btn" class="btn-secondary">Export Data (JSON)</button>
+        <button id="settings-import-btn" class="btn-secondary">Import Backup</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="import-review-modal" class="modal-overlay">
+    <div class="modal import-review-modal">
+      <button class="modal-close">&times;</button>
+      <h2>Review Import Changes</h2>
+      <p class="import-review-intro">Al Ghanim Nexus compared the selected backup with your current data. Review the inserts and updates before importing.</p>
+      <div id="import-review-summary" class="import-review-summary"></div>
+      <div id="import-review-details" class="import-review-details"></div>
+      <div class="import-review-actions">
+        <button id="import-review-cancel" class="btn-secondary">Cancel</button>
+        <button id="import-review-confirm" class="btn-primary">Import Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Template Modal -->
+  <div id="template-modal" class="modal-overlay">
+    <div class="modal history-modal">
+      <button class="modal-close">&times;</button>
+      <h2 id="template-modal-title">📋 Templates</h2>
+      <div class="history-search-row">
+        <input type="text" id="history-search" class="history-search-input"
+          placeholder="Search by number, customer, date, or saved content">
+      </div>
+      <div id="template-list" class="history-list"></div>
+    </div>
+  </div>
+
+  <!-- Stock Deduction Modal -->
+  <div id="stock-deduction-modal-legacy" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>📦 Stock Deduction Confirmation</h2>
+      <div id="stock-deduction-body-legacy"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+        <button id="deduction-cancel-btn-legacy" class="btn-secondary">Cancel</button>
+        <button id="deduction-confirm-btn-legacy" class="btn-primary">Confirm & Print</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div id="change-password-modal" class="modal-overlay">
+    <div class="modal" style="max-width:400px">
+      <button id="cp-modal-close" class="modal-close">&times;</button>
+      <h2 id="cp-modal-title">Change Password</h2>
+      <p id="cp-helper" style="color:var(--text-secondary);font-size:12px;margin-bottom:12px"></p>
+      <div class="form-group">
+        <label>New Password</label>
+        <input type="password" id="cp-new-password" placeholder="Enter new password (leave empty to disable)">
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="cp-confirm-password" placeholder="Confirm new password">
+      </div>
+      <div id="cp-error" style="color:#e74c3c;font-size:12px;margin-bottom:8px;min-height:16px"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="cp-cancel-btn" class="btn-secondary">Cancel</button>
+        <button id="cp-save-btn" class="btn-primary">Save Password</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Template Name Modal -->
+  <div id="save-template-modal" class="modal-overlay">
+    <div class="modal" style="max-width:400px">
+      <button class="modal-close">&times;</button>
+      <h2 id="save-template-modal-title">📋 Save Template</h2>
+      <div class="form-group">
+        <label>Template Name</label>
+        <input type="text" id="st-template-name" placeholder="Enter template name">
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button id="st-cancel-btn" class="btn-secondary">Cancel</button>
+        <button id="st-save-btn" class="btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm New Document Modal -->
+  <div id="confirm-new-modal" class="modal-overlay">
+    <div class="modal" style="max-width:420px">
+      <button class="modal-close">&times;</button>
+      <h2>⚠️ Unsaved Changes</h2>
+      <p style="color:var(--text-secondary);margin-bottom:16px">You have unsaved changes. Would you like to save before
+        creating a new document?</p>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="cn-cancel-btn" class="btn-secondary">Cancel</button>
+        <button id="cn-discard-btn" class="btn-danger">Discard</button>
+        <button id="cn-save-btn" class="btn-primary">Save & New</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="history-open-guard-modal" class="modal-overlay">
+    <div class="modal" style="max-width:500px">
+      <button class="modal-close">&times;</button>
+      <h2>Open Saved Document</h2>
+      <p style="color:var(--text-secondary);margin-bottom:12px">
+        You already have a working document open. Choose how Al Ghanim Nexus should preserve it before opening the selected saved file.
+      </p>
+      <div class="history-open-guard-summary">
+        <div class="history-open-guard-row">
+          <span class="history-open-guard-label">Current</span>
+          <span id="history-open-guard-current" class="history-open-guard-value">Untitled document</span>
+        </div>
+        <div class="history-open-guard-row">
+          <span class="history-open-guard-label">Open</span>
+          <span id="history-open-guard-target" class="history-open-guard-value">Saved document</span>
+        </div>
+      </div>
+      <div class="history-open-guard-actions">
+        <button id="history-open-guard-cancel" class="btn-secondary">Cancel</button>
+        <button id="history-open-guard-discard" class="btn-danger">Discard & Open</button>
+        <button id="history-open-guard-draft" class="btn-secondary">Save as Draft & Open</button>
+        <button id="history-open-guard-save" class="btn-primary">Save Current & Open</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Draft Recovery Modal -->
+  <div id="draft-recovery-modal" class="modal-overlay">
+    <div class="modal" style="max-width:560px">
+      <button class="modal-close">&times;</button>
+      <h2>Recover Unsaved Work</h2>
+      <p style="color:var(--text-secondary);margin-bottom:16px">Al Ghanim Nexus found unsaved drafts from your last session.
+        You can recover them or discard them.</p>
+      <div id="draft-recovery-list" class="draft-recovery-list"></div>
+      <div class="draft-recovery-actions">
+        <button id="draft-recovery-dismiss" class="btn-secondary">Later</button>
+        <button id="draft-recovery-discard-all" class="btn-danger" style="display:none">Discard All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock History Modal -->
+  <div id="stock-history-modal" class="modal-overlay">
+    <div class="modal modal-lg">
+      <button class="modal-close">&times;</button>
+      <h2>Stock Movement History</h2>
+      <div id="stock-history-summary" class="stock-history-summary"></div>
+      <div id="stock-history-list" class="stock-history-list"></div>
+    </div>
+  </div>
+
+  <div id="stock-adjustment-modal" class="modal-overlay">
+    <div class="modal stock-adjustment-modal">
+      <button id="stock-adjustment-close" class="modal-close">&times;</button>
+      <h2>Confirm Stock Adjustment</h2>
+      <p class="stock-adjustment-intro">Choose why this quantity changed so movement history stays clear.</p>
+      <div id="stock-adjustment-summary" class="stock-adjustment-summary"></div>
+      <div class="form-group">
+        <label for="stock-adjustment-reason">Reason</label>
+        <select id="stock-adjustment-reason">
+          <option value="manual-count">Stock count correction</option>
+          <option value="supplier-restock">Supplier restock</option>
+          <option value="customer-return">Customer return</option>
+          <option value="damage-loss">Damage / loss</option>
+          <option value="manual-adjustment">Manual adjustment</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="stock-adjustment-note">Note (optional)</label>
+        <textarea id="stock-adjustment-note" rows="3" placeholder="Add a short note for this change"></textarea>
+      </div>
+      <div id="stock-adjustment-error" style="color:#e74c3c;font-size:12px;margin-bottom:8px;min-height:16px"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="stock-adjustment-cancel" class="btn-secondary">Cancel</button>
+        <button id="stock-adjustment-confirm" class="btn-primary">Save Adjustment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock Deduction Confirmation Modal -->
+  <div id="stock-deduction-modal" class="modal-overlay">
+    <div class="modal" style="max-width:500px">
+      <button class="modal-close">&times;</button>
+      <h2>📦 Stock Update Summary</h2>
+      <p style="color:var(--text-secondary);margin-bottom:12px">The following items will be deducted from your stock:
+      </p>
+      <div id="stock-deduction-body"
+        style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:8px; margin-bottom:16px; max-height:300px; overflow:auto">
+        <!-- Rows injected here -->
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="deduction-cancel-btn" class="btn-secondary">Cancel</button>
+        <button id="deduction-print-only-btn" class="btn-secondary">Print Only</button>
+        <button id="deduction-confirm-btn" class="btn-primary">Confirm & Print</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="invoice-barcode-update-modal" class="modal-overlay">
+    <div class="modal" style="max-width:560px">
+      <button id="invoice-barcode-update-close" class="modal-close">&times;</button>
+      <h2>Barcode Match Found</h2>
+      <p style="color:var(--text-secondary);margin-bottom:12px">Some manual invoice rows match My Stocks. Update those rows before printing?</p>
+      <div id="invoice-barcode-update-body" class="invoice-barcode-update-list"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="invoice-barcode-update-cancel" class="btn-secondary">Cancel</button>
+        <button id="invoice-barcode-update-skip" class="btn-secondary">Print As Is</button>
+        <button id="invoice-barcode-update-confirm" class="btn-primary">Update & Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Password Override Modal -->
+  <div id="admin-override-modal" class="modal-overlay">
+    <div class="modal" style="max-width:400px">
+      <button class="modal-close">&times;</button>
+      <h2>🔐 Admin Override Required</h2>
+      <p style="color:var(--text-secondary);margin-bottom:12px">Some items have insufficient stock. Enter admin password
+        to override:</p>
+      <div class="form-group">
+        <input type="password" id="ao-password" placeholder="Admin password">
+      </div>
+      <div id="ao-error" style="color:#e74c3c;font-size:12px;margin-bottom:8px;min-height:16px"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="ao-cancel-btn" class="btn-secondary">Cancel</button>
+        <button id="ao-confirm-btn" class="btn-primary">Override</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ Custom Print Dialog (PDF.js Powered) ══════ -->
+  <div id="print-dialog-overlay" class="print-dialog-overlay">
+    <div class="print-dialog">
+      <div class="print-dialog-header">
+        <span class="print-dialog-title">🖨️ Custom Print Dialog</span>
+        <button id="print-dialog-close" class="print-dialog-close-btn">&times;</button>
+      </div>
+
+      <div class="print-dialog-body">
+        <div class="print-dialog-settings">
+          <div class="print-setting-group print-setting-group-compact">
+            <div class="print-summary-row">
+              <span class="print-setting-label">Total Pages</span>
+              <span id="pd-total-pages" class="print-page-count">0</span>
+            </div>
+            <div class="print-summary-row">
+              <span class="print-setting-label">Output</span>
+              <select id="pd-destination" class="print-setting-select">
+                <option value="print">Print</option>
+                <option value="pdf">Save as PDF</option>
+              </select>
+            </div>
+            <div class="print-summary-row">
+              <span class="print-setting-label">Color Mode</span>
+              <select id="pd-color" class="print-setting-select">
+                <option value="color">Color</option>
+                <option value="bw">Black and white</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="print-setting-group print-setting-group-compact print-preset-group" hidden>
+            <div class="print-summary-row">
+              <span class="print-setting-label">Preset</span>
+              <select id="pd-preset-select" class="print-setting-select">
+                <option value="">Default settings</option>
+              </select>
+            </div>
+            <input type="text" id="pd-preset-name" class="print-setting-input"
+              placeholder="Save current settings as a preset">
+            <div class="print-preset-actions">
+              <button type="button" id="pd-preset-save" class="print-preset-btn">Save Current</button>
+              <button type="button" id="pd-preset-delete" class="print-preset-btn" disabled>Delete</button>
+            </div>
+            <div id="pd-preset-hint" class="print-preset-hint">Saved presets are kept separately for invoice, rapid order sheet, and barcode.</div>
+          </div>
+
+          <div class="print-setting-group">
+            <label class="print-setting-label">Pages</label>
+            <select id="pd-pages-select" class="print-setting-select">
+              <option value="all">All</option>
+              <option value="odd">Odd pages</option>
+              <option value="even">Even pages</option>
+              <option value="custom">Custom</option>
+            </select>
+            <input type="text" id="pd-pages-custom" class="print-setting-input" placeholder="e.g. 1-5, 8, 11-13"
+              style="display:none; margin-top:8px">
+          </div>
+
+          <div class="print-setting-group" id="pd-copies-group">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label class="print-setting-label" style="margin-bottom:0">Copies</label>
+              <input type="number" id="pd-copies" class="print-setting-input" value="1" min="1" style="width:60px">
+            </div>
+            <div class="print-setting-toggle" style="padding:8px 0 0 0">
+              <label>
+                <input type="checkbox" id="pd-collate" checked> Collate
+              </label>
+            </div>
+          </div>
+
+          <div class="print-setting-group print-setting-group-compact" id="pd-barcode-printer-group" hidden>
+            <label class="print-setting-label">Barcode Printer Type</label>
+            <select id="pd-barcode-printer-type" class="print-setting-select">
+              <option value="a4-sheet-30">A4 Label Sheet (3 × 10)</option>
+              <option value="thermal-58x40">Thermal Barcode (58 × 40 mm)</option>
+              <option value="thermal-80x50">Thermal Barcode (80 × 50 mm)</option>
+              <option value="thermal-100x50">Thermal Barcode (100 × 50 mm)</option>
+            </select>
+            <div id="pd-barcode-printer-hint" class="print-preset-hint">
+              Automatically formats the barcode sheet for the selected printer and updates the live preview.
+            </div>
+          </div>
+
+          <div class="print-setting-group">
+            <label class="print-setting-label">Layout</label>
+            <div class="print-layout-toggle" id="pd-layout-toggle">
+              <button class="layout-btn active" data-value="portrait">Portrait</button>
+              <button class="layout-btn" data-value="landscape">Landscape</button>
+            </div>
+            <input type="hidden" id="pd-layout" value="portrait">
+          </div>
+
+          <div class="print-more-settings-toggle" id="pd-more-settings-toggle">
+            <span>More settings</span>
+            <span class="arrow">▼</span>
+          </div>
+
+          <div class="print-advanced-settings" id="pd-advanced-settings" style="display:none">
+            <div class="print-setting-group">
+              <label class="print-setting-label">Paper size</label>
+              <select id="pd-paper-size" class="print-setting-select">
+                <option value="A4">A4</option>
+                <option value="Letter">Letter</option>
+                <option value="Legal">Legal</option>
+                <option value="A3">A3</option>
+                <option value="A5">A5</option>
+                <option value="Thermal58x40">Thermal 58 × 40 mm</option>
+                <option value="Thermal80x50">Thermal 80 × 50 mm</option>
+                <option value="Thermal100x50">Thermal 100 × 50 mm</option>
+              </select>
+            </div>
+
+            <div class="print-setting-group">
+              <label class="print-setting-label">Pages per sheet</label>
+              <select id="pd-pages-per-sheet" class="print-setting-select">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="9">9</option>
+                <option value="16">16</option>
+              </select>
+            </div>
+
+            <div class="print-setting-group">
+              <label class="print-setting-label">Margins</label>
+              <select id="pd-margins" class="print-setting-select">
+                <option value="default">Default</option>
+                <option value="none">None</option>
+                <option value="minimum">Minimum</option>
+                <option value="custom">Custom</option>
+              </select>
+              <div id="pd-margins-custom-ui" class="margins-custom-grid" style="display:none">
+                <input type="number" id="pd-margin-top" placeholder="Top" class="print-setting-input">
+                <input type="number" id="pd-margin-bottom" placeholder="Bottom" class="print-setting-input">
+                <input type="number" id="pd-margin-left" placeholder="Left" class="print-setting-input">
+                <input type="number" id="pd-margin-right" placeholder="Right" class="print-setting-input">
+              </div>
+            </div>
+
+            <div class="print-setting-group">
+              <label class="print-setting-label">Scale</label>
+              <select id="pd-scale" class="print-setting-select">
+                <option value="default">Default</option>
+                <option value="fit">Fit to page</option>
+                <option value="custom">Custom</option>
+              </select>
+              <input type="number" id="pd-scale-custom" class="print-setting-input" value="100" min="10" max="200"
+                style="display:none; margin-top:8px">
+            </div>
+
+            <div class="print-setting-group">
+              <label class="print-setting-label">Options</label>
+              <div class="print-setting-toggle">
+                <label><input type="checkbox" id="pd-headers-footers"> Headers and footers</label>
+              </div>
+              <div class="print-setting-toggle">
+                <label><input type="checkbox" id="pd-background" checked> Background graphics</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="print-dialog-actions">
+            <button id="pd-cancel-btn" class="btn-secondary">Cancel</button>
+            <button id="pd-print-btn" class="btn-primary">Print Document</button>
+          </div>
+        </div>
+
+        <div id="print-dialog-preview" class="print-dialog-preview">
+          <div class="print-dialog-preview-panel">
+            <div class="print-dialog-preview-meta">
+              <span class="print-preview-title">Live Preview</span>
+              <span class="print-preview-subtitle">Matches the generated print document</span>
+            </div>
+            <div id="print-dialog-preview-content" class="print-dialog-preview-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Print Container -->
+  <div id="print-container" class="print-container"></div>
+
+  <!-- ══════ Scripts ══════ -->
+  <script src="js/invoice-math.js"></script>
+  <script src="js/persistence.js"></script>
+  <script src="js/stocks-helpers.js"></script>
+  <script src="js/modules/invoice-engine.js"></script>
+  <script src="js/modules/sell-manager.js"></script>
+  <script src="js/scanner.js"></script>
+  <script src="js/stocks.js"></script>
+  <script src="js/barcode-gen.js"></script>
+  <script src="js/modules/print-manager.js"></script>
+  <script src="js/keyboard-nav.js"></script>
+  <script src="js/login.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/notification.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

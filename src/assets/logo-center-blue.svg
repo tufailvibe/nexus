@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="100%" height="100%">
+  <defs>
+    <style>
+      .al-blue { fill: #1a3476; }
+      .text-ar {
+        font-family: 'Noto Naskh Arabic', 'Traditional Arabic', 'Segoe UI', Tahoma, sans-serif;
+        font-size: 40px;
+        font-weight: 700;
+      }
+      .text-en {
+        font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+    </style>
+  </defs>
+
+  <!-- GD Interlock Mark -->
+  <g transform="translate(100, 78) scale(0.48)">
+    <path class="al-blue" d="
+      M -10 -94.04
+      L -34 -94.04
+      A 100 100 0 0 0 -34 94.04
+      L -24 94.04
+      L -10 80.04
+      L -10 12
+      L -46 12
+      L -46 38.52
+      A 60 60 0 0 1 -10 -59.16
+      Z
+    "/>
+    <path class="al-blue" d="
+      M 10 94.04
+      L 34 94.04
+      A 100 100 0 0 0 34 -94.04
+      L 24 -94.04
+      L 10 -80.04
+      L 10 -12
+      L 46 -12
+      L 46 -38.52
+      A 60 60 0 0 1 10 59.16
+      Z
+    "/>
+  </g>
+
+  <!-- Arabic: الغانم -->
+  <text x="100" y="182" class="al-blue text-ar" text-anchor="middle" direction="rtl" xml:lang="ar">الغـــانــم</text>
+
+  <!-- English: Al Ghanim -->
+  <text x="100" y="218" class="al-blue text-en" text-anchor="middle">Al Ghanim</text>
+</svg>

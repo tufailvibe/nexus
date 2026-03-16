@@ -1,0 +1,16 @@
+{
+  "name": "al-ghanim-nexus-headless-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Headless execution and integration testing harness for the Al Ghanim Nexus Electron app",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node scripts/run-tests.js",
+    "test:verbose": "node scripts/run-tests.js --test-reporter=spec",
+    "audit": "node scripts/run-audit.js",
+    "test:deep": "node scripts/run-tests.js && node scripts/run-audit.js"
+  },
+  "dependencies": {
+    "playwright-core": "^1.54.2"
+  }
+}
