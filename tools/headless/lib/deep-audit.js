@@ -298,7 +298,7 @@ ${formatFindings(audit.findings)}
 `;
     }).join('\n');
 
-    return `# Al Ghanim Nexus Deep Audit Report
+    return `# Nexus Deep Audit Report
 
 Generated at: ${report.generatedAt}
 

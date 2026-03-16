@@ -5,8 +5,8 @@ const path = require('path');
 
 const projectRoot = path.resolve(__dirname, '..');
 const distDir = path.join(projectRoot, 'dist');
-const deliveryDir = path.join(projectRoot, 'ALGHANIM DELIVERY');
-const artifactPrefix = 'Al-Ghanim-Nexus-Setup-';
+const deliveryDir = path.join(projectRoot, 'NEXUS DELIVERY');
+const artifactPrefix = 'Nexus-Setup-';
 const packageJson = JSON.parse(
   fs.readFileSync(path.join(projectRoot, 'package.json'), 'utf8')
 );
@@ -38,7 +38,7 @@ function collectInstallers() {
     .filter((name) => name.startsWith(artifactPrefix) && path.extname(name).toLowerCase() === '.exe')
     .sort((left, right) => left.localeCompare(right));
 
-  const universalName = `Al-Ghanim-Nexus-Setup-${packageJson.version}.exe`;
+  const universalName = `Nexus-Setup-${packageJson.version}.exe`;
   if (installers.includes(universalName)) {
     return [universalName];
   }

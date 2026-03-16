@@ -2408,7 +2408,7 @@ const PrintManager = (() => {
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <base href="${baseHref}">
-                <title>Al Ghanim Nexus Print</title>
+                <title>Nexus Print</title>
                 ${links}
                 <style id="dynamic-print-page-style">@page { size: ${job.settings.pageCssSize}; margin: 0; }</style>
                 ${previewShell}

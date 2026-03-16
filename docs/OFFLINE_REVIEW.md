@@ -6,7 +6,7 @@ This repository was prepared so someone can understand the project even when the
 
 - `README.md` for project overview
 - `README_PRINT_SYSTEM.md` for print workflow details
-- `docs/screenshots/` for UI previews
+- `docs/screenshots/` for a sanitized UI preview
 - `tools/headless/README.md` for automated validation coverage
 
 ## Intentionally omitted

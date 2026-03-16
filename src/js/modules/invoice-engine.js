@@ -424,7 +424,7 @@ const Invoice = (() => {
 
     return `
       <div class="inv-header-svg-wrap">
-        <img src="assets/invoice-header-top.svg" alt="Invoice header - Al Ghanim" class="inv-header-layout-svg" />
+        <img src="assets/invoice-header-top.svg" alt="Invoice header - Nexus" class="inv-header-layout-svg" />
       </div>
       <div class="inv-title-bar">
         <span class="inv-title-label">Invoice:</span>
@@ -799,13 +799,13 @@ const Invoice = (() => {
         <div class="lh-top-grid">
           <div class="lh-left-brand">
             <div class="lh-left-brand-svg-wrap">
-              <img src="assets/letterhead2.svg" alt="Al Ghanim gray brand" class="lh-left-brand-svg" />
+              <img src="assets/letterhead2.svg" alt="Nexus gray brand" class="lh-left-brand-svg" />
             </div>
           </div>
           <div class="lh-cr-en">C.R. No. 431998</div>
           <div class="lh-center-brand">
             <div class="lh-center-mark-wrap">
-              <img src="assets/logo-center-blue.svg" alt="Al Ghanim blue brand" class="lh-center-mark-svg" />
+              <img src="assets/logo-center-blue.svg" alt="Nexus blue brand" class="lh-center-mark-svg" />
             </div>
           </div>
           <div class="lh-cr-ar" dir="rtl">رقم السجل تجاري : ٤٣١٩٩٨</div>
@@ -876,13 +876,13 @@ const Invoice = (() => {
         <div class="lh-top-grid">
           <div class="lh-left-brand">
             <div class="lh-left-brand-svg-wrap">
-              <img src="assets/letterhead2.svg" alt="Al Ghanim gray brand" class="lh-left-brand-svg" />
+              <img src="assets/letterhead2.svg" alt="Nexus gray brand" class="lh-left-brand-svg" />
             </div>
           </div>
           <div class="lh-cr-en">C.R. No. 431998</div>
           <div class="lh-center-brand">
             <div class="lh-center-mark-wrap">
-              <img src="assets/logo-center-blue.svg" alt="Al Ghanim blue brand" class="lh-center-mark-svg" />
+              <img src="assets/logo-center-blue.svg" alt="Nexus blue brand" class="lh-center-mark-svg" />
             </div>
           </div>
           <div class="lh-cr-ar" dir="rtl">رقم السجل تجاري : ٤٣١٩٩٨</div>

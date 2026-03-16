@@ -66,7 +66,7 @@ async function openHistoryShareMenu(page, id) {
     }, id);
 }
 
-async function seedInvoiceWorkspace(page, { invoiceNumber, customerName, itemName, barcode = '', unitPriceFils = 1000, qty = 1, productBy = 'Al Ghanim Nexus Foods' }) {
+async function seedInvoiceWorkspace(page, { invoiceNumber, customerName, itemName, barcode = '', unitPriceFils = 1000, qty = 1, productBy = 'Nexus Foods' }) {
     await page.evaluate(async (payload) => {
         await Sell.newDocument({ discardUnsaved: true });
         Sell.setView('invoice');
@@ -90,7 +90,7 @@ async function seedInvoiceWorkspace(page, { invoiceNumber, customerName, itemNam
     }, { invoiceNumber, customerName, itemName, barcode, unitPriceFils, qty, productBy });
 }
 
-async function seedLetterheadWorkspace(page, { addressee, itemName, barcode = '', unitPriceFils = 1000, qty = 1, productBy = 'Al Ghanim Nexus Foods' }) {
+async function seedLetterheadWorkspace(page, { addressee, itemName, barcode = '', unitPriceFils = 1000, qty = 1, productBy = 'Nexus Foods' }) {
     await page.evaluate(async (payload) => {
         await Sell.newDocument({ discardUnsaved: true });
         Sell.setView('letterhead');
@@ -124,7 +124,7 @@ async function waitForExternalActions(harness, expectedCount) {
     return false;
 }
 
-test('Al Ghanim Nexus headless integration suite', { concurrency: false }, async (t) => {
+test('Nexus headless integration suite', { concurrency: false }, async (t) => {
     const harness = await createHarness();
 
     try {
@@ -177,7 +177,7 @@ test('Al Ghanim Nexus headless integration suite', { concurrency: false }, async
 
             const row = '#stocks-tbody tr:first-child';
             await fillAndBlur(harness.page, `${row} [data-field="barcode"]`, '100100');
-            await fillAndBlur(harness.page, `${row} [data-field="product_by"]`, 'Al Ghanim Nexus Foods');
+            await fillAndBlur(harness.page, `${row} [data-field="product_by"]`, 'Nexus Foods');
             await fillAndBlur(harness.page, `${row} [data-field="name_en"]`, 'Cardamom Tea');
             await fillAndBlur(harness.page, `${row} [data-field="name_ar"]`, 'Tea Arabic');
             await fillAndBlur(harness.page, `${row} [data-field="weight"]`, '500g');
@@ -250,7 +250,7 @@ test('Al Ghanim Nexus headless integration suite', { concurrency: false }, async
 
             const row = '#stocks-tbody tr:first-child';
             await fillAndBlur(harness.page, `${row} [data-field="barcode"]`, '100101');
-            await fillAndBlur(harness.page, `${row} [data-field="product_by"]`, 'Al Ghanim Nexus Foods');
+            await fillAndBlur(harness.page, `${row} [data-field="product_by"]`, 'Nexus Foods');
             await fillAndBlur(harness.page, `${row} [data-field="name_en"]`, 'Adjustment Check');
             await fillAndBlur(harness.page, `${row} [data-field="weight"]`, '250g');
             await fillAndBlur(harness.page, `${row} [data-field="unit_price"]`, '0.750');

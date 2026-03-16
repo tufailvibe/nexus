@@ -1,7 +1,7 @@
 {
-    "name": "al-ghanim-nexus",
+    "name": "nexus-desktop",
     "version": "1.0.0",
-    "description": "Recruiter-safe source snapshot for the Al Ghanim Nexus Electron desktop app",
+    "description": "Recruiter-safe source snapshot for the Nexus Electron desktop app",
     "main": "app-main/main.js",
     "scripts": {
     "start": "node start.js",
@@ -16,11 +16,11 @@
     "deliver:win": "electron-builder --win && npm run stamp:win:metadata && node scripts/create-delivery-folder.js"
   },
     "build": {
-        "appId": "com.alghanimnexus.app",
-        "productName": "Al Ghanim Nexus",
+        "appId": "com.nexus.desktop",
+        "productName": "Nexus",
         "copyright": "Copyright (C) 2026 mohdt. All rights reserved.",
         "forceCodeSigning": false,
-        "artifactName": "Al-Ghanim-Nexus-Setup-${version}-${arch}.${ext}",
+        "artifactName": "Nexus-Setup-${version}-${arch}.${ext}",
         "win": {
             "icon": "build/icon.ico",
             "target": [
@@ -40,8 +40,8 @@
             "deleteAppDataOnUninstall": false,
             "createDesktopShortcut": true,
             "createStartMenuShortcut": true,
-            "shortcutName": "Al Ghanim Nexus",
-            "uninstallDisplayName": "Al Ghanim Nexus",
+            "shortcutName": "Nexus",
+            "uninstallDisplayName": "Nexus",
             "differentialPackage": false
         },
         "files": [

@@ -3,7 +3,7 @@
  * Uses custom modal dialogs instead of native prompt/alert.
  */
 const Login = (() => {
-    const DEFAULT_USER = 'admin';
+    const DEFAULT_USER = 'owner';
     const PASSWORD_HASH_PREFIX = 'sha256:';
     const SESSION_ACTIVITY_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
     let passwordModalControlsBound = false;

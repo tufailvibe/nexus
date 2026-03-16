@@ -1,8 +1,8 @@
-# nnexus
+# Nexus
 
-Recruiter-safe GitHub mirror for the **Al Ghanim Nexus** Electron desktop application.
+Recruiter-safe GitHub mirror for the **Nexus** Electron desktop application.
 
-This copy is intentionally separated from the working project so the original workspace stays untouched. The repository includes the core source code, build configuration, local screenshots, and validation tooling, while leaving out generated installers, `node_modules`, temporary artifacts, local reports, reference PDFs, and the bundled seed database.
+This copy is intentionally separated from the working project so the original workspace stays untouched. The repository includes the core source code, build configuration, a sanitized setup screenshot, and validation tooling, while leaving out generated installers, `node_modules`, temporary artifacts, local reports, reference PDFs, and the bundled seed database.
 
 ## What the app does
 
@@ -24,11 +24,9 @@ On first launch, the app creates its local SQLite database structure automatical
 
 ## Offline review
 
-Everything needed to review the project structure is in this repository, including local docs and screenshots:
+Everything needed to review the project structure is in this repository, including local docs and a sanitized screenshot:
 
 ![Login preview](docs/screenshots/login-preview.png)
-
-![Authenticated preview](docs/screenshots/login-preview-auth.png)
 
 Additional offline notes are available in `docs/OFFLINE_REVIEW.md`.
 

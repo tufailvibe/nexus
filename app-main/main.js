@@ -393,7 +393,7 @@ function createWindow() {
       enableRemoteModule: false,
       sandbox: true
     },
-    title: 'Al Ghanim Nexus - Invoice & Rapid Order Sheet',
+    title: 'Nexus - Invoice & Rapid Order Sheet',
     autoHideMenuBar: true
   });
 
@@ -431,7 +431,7 @@ function createWindow() {
         defaultId: 0,
         cancelId: 2,
         noLink: true,
-        title: 'Close Al Ghanim Nexus',
+        title: 'Close Nexus',
         message,
         detail
       });

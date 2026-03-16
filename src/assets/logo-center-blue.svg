@@ -47,6 +47,6 @@
   <!-- Arabic: الغانم -->
   <text x="100" y="182" class="al-blue text-ar" text-anchor="middle" direction="rtl" xml:lang="ar">الغـــانــم</text>
 
-  <!-- English: Al Ghanim -->
-  <text x="100" y="218" class="al-blue text-en" text-anchor="middle">Al Ghanim</text>
+  <!-- English: Nexus -->
+  <text x="100" y="218" class="al-blue text-en" text-anchor="middle">Nexus</text>
 </svg>

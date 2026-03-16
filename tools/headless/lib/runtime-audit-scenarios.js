@@ -36,7 +36,7 @@ async function seedProduct(harness, overrides = {}) {
         country: 'Kuwait',
         weight: '500g',
         unit_price_fils: 1250,
-        product_by: 'Al Ghanim Nexus Foods',
+        product_by: 'Nexus Foods',
         pack_qty_text: '2 Packet',
         stock_qty: 2,
         reorder_level: 5,
@@ -164,7 +164,7 @@ async function auditStocksManagement(harness) {
 
     const row = '#stocks-tbody tr:first-child';
     await fillAndBlur(harness.page, `${row} [data-field="barcode"]`, '100100');
-    await fillAndBlur(harness.page, `${row} [data-field="product_by"]`, 'Al Ghanim Nexus Foods');
+    await fillAndBlur(harness.page, `${row} [data-field="product_by"]`, 'Nexus Foods');
     await fillAndBlur(harness.page, `${row} [data-field="name_en"]`, 'Cardamom Tea');
     await fillAndBlur(harness.page, `${row} [data-field="name_ar"]`, 'Tea Arabic');
     await fillAndBlur(harness.page, `${row} [data-field="weight"]`, '500g');

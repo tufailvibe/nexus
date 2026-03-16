@@ -70,7 +70,7 @@ function iconMarkup() {
     </style>
   </head>
   <body>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-label="Al Ghanim Nexus icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-label="Nexus icon">
       <defs>
         <linearGradient id="icon-bg" x1="28" y1="18" x2="220" y2="236" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stop-color="#1d4ca8"/>

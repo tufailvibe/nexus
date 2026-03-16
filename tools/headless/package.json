@@ -2,7 +2,7 @@
   "name": "al-ghanim-nexus-headless-tools",
   "private": true,
   "version": "1.0.0",
-  "description": "Headless execution and integration testing harness for the Al Ghanim Nexus Electron app",
+  "description": "Headless execution and integration testing harness for the Nexus Electron app",
   "type": "commonjs",
   "scripts": {
     "test": "node scripts/run-tests.js",
