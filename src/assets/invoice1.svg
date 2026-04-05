@@ -4,7 +4,6 @@
       .bg { fill: #ffffff; }
       .brand-blue { fill: #2c4284; }
       .brand-dark { fill: #231f20; }
-      
       .text-en-main {
         font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
         font-weight: 800;
@@ -60,7 +59,6 @@
 
   <text x="300" y="160" class="brand-blue text-en-main" text-anchor="middle">Nexus Trading</text>
   <text x="302" y="185" class="brand-blue text-en-sub" text-anchor="middle">General Trading Co.</text>
-  
-  <text x="300" y="240" class="brand-dark text-ar" text-anchor="middle" direction="rtl">شركة الغانم جلوبال للتجاره العامه</text>
+  <text x="300" y="240" class="brand-dark text-ar" text-anchor="middle" direction="rtl">شركة نكسس للتجارة العامة</text>
   <text x="300" y="275" class="brand-dark text-en-bottom" text-anchor="middle">Nexus Trading Co.</text>
 </svg>

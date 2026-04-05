@@ -355,7 +355,7 @@
 }
 
 /* ══════════════════════════════════════════════
-   INVOICE FOOTER — Sagar + Signatures
+   INVOICE FOOTER — Brand + Signatures
    ══════════════════════════════════════════════ */
 .inv-footer-section {
     display: flex;
@@ -366,7 +366,7 @@
     border-top: 1pt solid #ccc;
 }
 
-.inv-footer-sagar {
+.inv-footer-brand {
     max-width: 280px;
 }
 

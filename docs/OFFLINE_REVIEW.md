@@ -1,22 +1,22 @@
 # Offline Review Notes
 
-This repository was prepared so someone can understand the project even when they are only looking at the local folder.
+This repository is a source-focused review copy of the project. It is intended to remain understandable even when someone is browsing the codebase locally without access to private working files or generated runtime output.
 
-## Included for offline review
+## Included In This Public Review Copy
 
-- `README.md` for project overview
-- `README_PRINT_SYSTEM.md` for print workflow details
+- `README.md` for the project overview
+- `README_PRINT_SYSTEM.md` for print workflow notes
 - `docs/screenshots/` for a sanitized UI preview
-- `tools/headless/README.md` for automated validation coverage
+- `tools/headless/README.md` for validation and test coverage context
 
-## Intentionally omitted
+## Intentionally Omitted
 
 - packaged Windows installers
 - `node_modules`
 - temporary and generated reports
-- local database snapshot
+- local database snapshots and profile data
 - client reference PDFs and other private working files
 
-## Result
+## Review Outcome
 
-The folder stays lighter, safer for public sharing, and easier to upload to GitHub without affecting the original working project.
+The repository stays source-focused, lighter to inspect, and better suited for public GitHub sharing without exposing private runtime data or customer reference material.

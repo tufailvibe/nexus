@@ -451,7 +451,7 @@ const Invoice = (() => {
   function renderInvoiceFooter(pageNum) {
     return `
       <div class="inv-footer-section">
-        <div class="inv-footer-sagar">
+        <div class="inv-footer-brand">
           <img src="${INVOICE_FOOTER_LOGO_SRC}" alt="Invoice footer logo" class="inv-footer-logo" />
         </div>
         <div class="inv-footer-sigs">
@@ -802,13 +802,13 @@ const Invoice = (() => {
               <img src="assets/letterhead2.svg" alt="Nexus gray brand" class="lh-left-brand-svg" />
             </div>
           </div>
-          <div class="lh-cr-en">C.R. No. 431998</div>
+          <div class="lh-cr-en">C.R. No. 000000</div>
           <div class="lh-center-brand">
             <div class="lh-center-mark-wrap">
               <img src="assets/logo-center-blue.svg" alt="Nexus blue brand" class="lh-center-mark-svg" />
             </div>
           </div>
-          <div class="lh-cr-ar" dir="rtl">رقم السجل تجاري : ٤٣١٩٩٨</div>
+          <div class="lh-cr-ar" dir="rtl">رقم السجل التجاري: 000000</div>
           <div class="lh-date-box">
             <span class="lh-date-label">Date:</span>
             <span class="lh-date-line">
@@ -879,13 +879,13 @@ const Invoice = (() => {
               <img src="assets/letterhead2.svg" alt="Nexus gray brand" class="lh-left-brand-svg" />
             </div>
           </div>
-          <div class="lh-cr-en">C.R. No. 431998</div>
+          <div class="lh-cr-en">C.R. No. 000000</div>
           <div class="lh-center-brand">
             <div class="lh-center-mark-wrap">
               <img src="assets/logo-center-blue.svg" alt="Nexus blue brand" class="lh-center-mark-svg" />
             </div>
           </div>
-          <div class="lh-cr-ar" dir="rtl">رقم السجل تجاري : ٤٣١٩٩٨</div>
+          <div class="lh-cr-ar" dir="rtl">رقم السجل التجاري: 000000</div>
           <div class="lh-date-box">
             <span class="lh-date-label">Date:</span>
             <span class="lh-date-line">
