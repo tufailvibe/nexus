@@ -1,8 +1,8 @@
-# Nexus — Desktop Business Operations App
+# Nexus - Local-First Desktop Operations App
 
-Recruiter-safe public mirror of a real Electron desktop application built for a live business workflow.
+`Nexus` is a Windows desktop application built for day-to-day business operations. It brings inventory management, invoice generation, barcode workflows, PDF output, and local backup tools into a single offline-first Electron app.
 
-`Nexus` is an offline-first Windows desktop app that brings inventory, invoice generation, barcode printing, PDF export, and local backup flows into one place. This public repository is intentionally sanitized for portfolio and GitHub sharing, so client-facing names and some private reference material remain masked.
+This repository is a public portfolio mirror of the project. Client-specific branding, private reference material, and production data are intentionally masked or omitted, while the core architecture, workflows, and validation setup remain available for review.
 
 Core business workflows run locally on the machine with no cloud dependency. Operational data is stored in Electron `userData`, not inside the repository.
 
@@ -18,7 +18,7 @@ Nexus was built to replace a fragmented manual workflow at a small business. The
 
 The result is a self-contained Electron application with local persistence through `SQL.js`, Windows packaging through `electron-builder`, and automated validation through a Playwright-based headless test harness.
 
-This repository is a source-only mirror prepared for review and publishing.
+This repository contains the source snapshot used for technical review and portfolio presentation.
 
 ## What The App Does
 
@@ -122,7 +122,7 @@ npm test
 npm run audit
 ```
 
-## Notes For Reviewers
+## Review Notes
 
 - This repository contains source code only.
 - Generated installers, `node_modules`, local databases, test output, and temporary runtime artifacts are excluded.
@@ -132,5 +132,5 @@ npm run audit
 
 ## Author
 
-Mohd Tufail Khan  
+Mohd Tufail Khan
 [github.com/tufailvibe](https://github.com/tufailvibe)
